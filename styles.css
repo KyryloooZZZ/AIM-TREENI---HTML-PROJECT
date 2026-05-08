@@ -1,0 +1,158 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: #0a0a0a;
+    color: #ccc;
+    font-family: "Sekuya", system-ui;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.logo {
+    font-weight: 400;
+    color: #e8af20;
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-size: 28px;
+}
+
+.navi {
+    background-color: #911411;
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+}
+
+.knopachke {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.koti {
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 100;
+    cursor: pointer;
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+}
+
+.koti:hover { opacity: 0.7; }
+
+input {
+    background-color: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    color: #ffffff;
+    padding: 10px 14px;
+    width: 320px;
+    font-family: "Sekuya", system-ui;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus { border-color: #911411; }
+
+input::placeholder { color: #555; }
+
+.regaknop{
+    background-color: #911411;
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    width: 320px;
+    font-family: "Sekuya", system-ui;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.6);
+}
+
+.logakno{
+    background-color: #911411;
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    width: 320px;
+    font-family: "Sekuya", system-ui;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.6);
+}
+button {
+    background-color: #911411;
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    width: 320px;
+    font-family: "Sekuya", system-ui;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.6);
+}
+
+button:hover { background-color: #b01815; }
+
+.form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+section {
+    height: calc(100vh - 44px - 54px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-title {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #555;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.form-link {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #555;
+    margin-top: 4px;
+}
+
+.form-link a {
+    color: #e8af20;
+    text-decoration: none;
+}
+
+.form-link a:hover { text-decoration: underline; }
+
+.divider {
+    border: none;
+    border-top: 1px solid #1e1e1e;
+    margin: 4px 0;
+}

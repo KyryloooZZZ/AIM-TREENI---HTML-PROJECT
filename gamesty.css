@@ -1,0 +1,125 @@
+.game-section {
+    height: calc(100vh - 44px - 54px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.game-hud {
+    display: flex;
+    gap: 48px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.hud-val {
+    color: #e8af20;
+    font-size: 22px;
+    display: block;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.arena {
+    position: relative;
+    width: 520px;
+    height: 320px;
+    border: 1px solid #1e1e1e;
+    background: #0d0d0d;
+    overflow: hidden;
+    cursor: crosshair;
+}
+
+.target {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #911411;
+    border: 2px solid #c0516a;
+    cursor: crosshair;
+    transition: transform 0.05s;
+}
+
+.target.gold {
+    background: #7a5a00;
+    border-color: #e8af20;
+}
+
+.game-msg {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #333;
+    height: 18px;
+}
+
+.game-msg.hit { color: #911411; 
+}
+
+.game-msg.miss { color: #333; 
+}
+
+.game-controls {
+    display: flex;
+    gap: 12px;
+}
+
+.game-controls button {
+    width: 140px;
+    font-size: 11px;
+    padding: 8px;
+}
+
+#startBtn { background: #911411; 
+}
+
+#resetBtn { background: #1a1a1a; border: 1px solid #2e2e2e; 
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    gap: 12px;
+}
+
+.overlay-title {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.overlay-score {
+    font-size: 48px;
+    color: #e8af20;
+}
+
+.overlay-sub {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #333;
+}
+
+.combo-flash {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #e8af20;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.combo-flash.show { opacity: 1; 
+}

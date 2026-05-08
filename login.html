@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S:TE — Kirjaudu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sekuya&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">S:TE</a>
+    </header>
+    <nav class="navi">
+        <div class="knopachke">
+            <a href="index.html" class="koti">Kotisivu</a>
+            <a href="register.html" class="koti">Luo tili</a>
+            <a href="game.html" class="koti">Peli</a>
+        </div>
+        <a href="login.html" class="koti">Kirjaudu sisään</a>
+    </nav>
+    <section>
+        <div class="form-box">
+            <p class="form-title">Kirjaudu sisään</p>
+            <hr class="divider">
+            <input type="text" placeholder="käyttäjänimi" />
+            <input type="password" placeholder="salasana" />
+            <button class="regaknop" onclick="tryRegister()">Kirjaudu</button>
+
+    <script>
+        function tryRegister() {
+            const fields = document.querySelectorAll('input');
+            for (const f of fields) {
+                if (f.value.trim() === '') {
+                    window.location.href = '404.html';
+                    return;
+                }
+            }
+            window.location.href = 'game.html';
+        }
+    </script>
+            <p class="form-link">Ei tiliä? <a href="register.html">Luo tili</a></p>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S:TE — Peli</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sekuya&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="gamesty.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">S:TE</a>
+    </header>
+    <nav class="navi">
+        <div class="knopachke">
+            <a href="index.html" class="koti">Kotisivu</a>
+            <a href="register.html" class="koti">Luo tili</a>
+            <a href="game.html" class="koti">Peli</a>
+        </div>
+        <a href="login.html" class="koti">Kirjaudu sisään</a>
+    </nav>
+
+    <div class="game-section">
+        <div class="game-hud">
+            <div>Pisteet<span class="hud-val" id="score">0</span></div>
+            <div>Aika<span class="hud-val" id="timer">30</span></div>
+            <div>Osumat<span class="hud-val" id="hits">0</span></div>
+            <div>Combo<span class="hud-val" id="combo">x1</span></div>
+        </div>
+
+        <div class="arena" id="arena" onclick="handleMiss()">
+            <div class="combo-flash" id="comboFlash"></div>
+            <div class="overlay" id="overlay">
+                <p class="overlay-title">AIM TREENI</p>
+                <p class="overlay-score" id="finalScore">—</p>
+                <p class="overlay-sub" id="overlayMsg"></p>
+            </div>
+        </div>
+
+        <p class="game-msg" id="msg"></p>
+
+        <div class="game-controls">
+            <button id="startBtn" onclick="startGame()">START</button>
+            <button id="resetBtn" onclick="resetGame()">RESET</button>
+        </div>
+    </div>
+
+    <script>
+        let score = 0, hits = 0, combo = 1, timeLeft = 30;
+        let gameRunning = false;
+        let timerInterval = null;
+        let targetTimeout = null;
+        let currentTarget = null;
+
+        const arena = document.getElementById('arena');
+        const overlay = document.getElementById('overlay');
+
+        function rand(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
+
+        function spawnTarget() {
+            if (!gameRunning) return;
+            if (currentTarget) currentTarget.remove();
+
+            const t = document.createElement('div');
+            t.className = 'target';
+
+            const size = 44;
+            t.style.width = size + 'px';
+            t.style.height = size + 'px';
+            t.style.left = rand(4, 520 - size - 4) + 'px';
+            t.style.top = rand(4, 320 - size - 4) + 'px';
+
+            const lifespan = rand(700, 1600);
+
+            t.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hitTarget(lifespan);
+            });
+        
+            arena.appendChild(t);
+            currentTarget = t;
+        
+            targetTimeout = setTimeout(() => {
+                if (currentTarget === t) {
+                    t.remove();
+                    currentTarget = null;
+                    combo = 1;
+                    updateHUD();
+                    spawnTarget();
+                }
+            }, lifespan);
+        }
+
+        function hitTarget(lifespan) {
+            if (!gameRunning) return;
+            clearTimeout(targetTimeout);
+            if (currentTarget) { currentTarget.remove(); currentTarget = null; }
+        
+            const pts = 10 * combo;
+            score += pts;
+            hits++;
+            combo = Math.min(combo + 1, 8);
+        
+            showMsg('+ ' + pts, true);
+            showCombo();
+            updateHUD();
+            spawnTarget();
+        }
+
+        function handleMiss() {
+            if (!gameRunning) return;
+            combo = 1;
+            updateHUD();
+            showMsg('MISS :)', false);
+        }
+
+        function showMsg(txt, hit) {
+            const m = document.getElementById('msg');
+            m.textContent = txt;
+            m.className = 'game-msg ' + (hit ? 'hit' : 'miss');
+            setTimeout(() => { m.textContent = ''; m.className = 'game-msg'; }, 600);
+        }
+
+        function showCombo() {
+            if (combo < 2) return;
+            const f = document.getElementById('comboFlash');
+            f.textContent = 'COMBO x' + combo + '!';
+            f.classList.add('show');
+            setTimeout(() => f.classList.remove('show'), 500);
+        }
+
+        function updateHUD() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('timer').textContent = timeLeft;
+            document.getElementById('hits').textContent = hits;
+            document.getElementById('combo').textContent = 'x' + combo;
+        }
+
+        function startGame() {
+            if (gameRunning) return;
+            score = 0; hits = 0; combo = 1; timeLeft = 30;
+            gameRunning = true;
+            overlay.style.display = 'none';
+            updateHUD();
+            spawnTarget();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateHUD();
+                if (timeLeft <= 0) endGame();
+            }, 1000);
+        }
+
+        function endGame() {
+            gameRunning = false;
+            clearInterval(timerInterval);
+            clearTimeout(targetTimeout);
+            if (currentTarget) { currentTarget.remove(); currentTarget = null; }
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('overlayMsg').textContent = hits + ' osumaa — paina START uudelleen';
+            overlay.style.display = 'flex';
+        }
+
+        function resetGame() {
+            gameRunning = false;
+            clearInterval(timerInterval);
+            clearTimeout(targetTimeout);
+            if (currentTarget) { currentTarget.remove(); currentTarget = null; }
+            score = 0; hits = 0; combo = 1; timeLeft = 30;
+            updateHUD();
+            document.getElementById('finalScore').textContent = '—';
+            document.getElementById('overlayMsg').textContent = 'Paina START aloittaaksesi';
+            overlay.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
