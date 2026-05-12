@@ -40,7 +40,7 @@
     height: 44px;
     border-radius: 50%;
     background: #911411;
-    border: 2px solid #c0516a;
+    border: 2px solid #ff003c;
     cursor: crosshair;
     transition: transform 0.05s;
 }
