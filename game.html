@@ -36,7 +36,7 @@
             <div class="overlay" id="overlay">
                 <p class="overlay-title">AIM TREENI</p>
                 <p class="overlay-score" id="finalScore">—</p>
-                <p class="overlay-sub" id="overlayMsg"></p>
+                <p class="overlay-sub" id="overlayMsg">Paina START aloittaaksesi</p>
             </div>
         </div>
 
@@ -60,6 +60,32 @@
 
         function rand(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
 
+        function bumpHud(id) {
+            const el = document.getElementById(id);
+            el.classList.remove('bump');
+            void el.offsetWidth;
+            el.classList.add('bump');
+        }
+
+        function spawnRipple(x, y) {
+            const r = document.createElement('div');
+            r.className = 'hit-ripple';
+            r.style.left = x + 'px';
+            r.style.top  = y + 'px';
+            arena.appendChild(r);
+            setTimeout(() => r.remove(), 400);
+        }
+
+        function spawnFloatText(x, y, txt) {
+            const f = document.createElement('div');
+            f.className = 'float-text';
+            f.textContent = txt;
+            f.style.left = x + 'px';
+            f.style.top  = (y - 10) + 'px';
+            arena.appendChild(f);
+            setTimeout(() => f.remove(), 600);
+        }
+
         function spawnTarget() {
             if (!gameRunning) return;
             if (currentTarget) currentTarget.remove();
@@ -68,21 +94,26 @@
             t.className = 'target';
 
             const size = 44;
-            t.style.width = size + 'px';
-            t.style.height = size + 'px';
-            t.style.left = rand(4, 520 - size - 4) + 'px';
-            t.style.top = rand(4, 320 - size - 4) + 'px';
+            const x = rand(4, 520 - size - 4);
+            const y = rand(4, 320 - size - 4);
+            t.style.left = x + 'px';
+            t.style.top  = y + 'px';
 
             const lifespan = 1500;
+            t.style.setProperty('--lifespan', lifespan + 'ms');
 
             t.addEventListener('click', (e) => {
                 e.stopPropagation();
-                hitTarget(lifespan);
+                const cx = x + size / 2;
+                const cy = y + size / 2;
+                spawnRipple(cx, cy);
+                spawnFloatText(cx, cy, '+' + (10 * combo));
+                hitTarget();
             });
-        
+
             arena.appendChild(t);
             currentTarget = t;
-        
+
             targetTimeout = setTimeout(() => {
                 if (currentTarget === t) {
                     t.remove();
@@ -94,19 +125,25 @@
             }, lifespan);
         }
 
-        function hitTarget(lifespan) {
+        function hitTarget() {
             if (!gameRunning) return;
             clearTimeout(targetTimeout);
             if (currentTarget) { currentTarget.remove(); currentTarget = null; }
-        
+
             const pts = 10 * combo;
             score += pts;
             hits++;
-            combo = Math.min(combo + 1, 8);
-        
+            combo = Math.min(combo + 1, 10);
+
+            // flash arena border
+            arena.classList.add('hit-flash');
+            setTimeout(() => arena.classList.remove('hit-flash'), 200);
+
             showMsg('+ ' + pts, true);
             showCombo();
             updateHUD();
+            bumpHud('score');
+            bumpHud('hits');
             spawnTarget();
         }
 
@@ -114,7 +151,7 @@
             if (!gameRunning) return;
             combo = 1;
             updateHUD();
-            showMsg('MISS :)', false);
+            showMsg('MISS', false);
         }
 
         function showMsg(txt, hit) {
@@ -128,6 +165,8 @@
             if (combo < 2) return;
             const f = document.getElementById('comboFlash');
             f.textContent = 'COMBO x' + combo + '!';
+            f.classList.remove('show');
+            void f.offsetWidth;
             f.classList.add('show');
             setTimeout(() => f.classList.remove('show'), 500);
         }
@@ -150,6 +189,7 @@
             timerInterval = setInterval(() => {
                 timeLeft--;
                 updateHUD();
+                bumpHud('timer');
                 if (timeLeft <= 0) endGame();
             }, 1000);
         }

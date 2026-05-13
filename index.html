@@ -21,10 +21,55 @@
         </div>
         <a href="login.html" class="koti">Kirjaudu sisään</a>
     </nav>
-    <h1>HTML-projekti</h1>
-    <p>Tämä projekti on vaiheittain etenevä pelisivusto, jota kehitetään osana ohjelmointiopintoja. Projektin tavoitteena on harjoitella web-kehityksen perusteita sekä syventää osaamista HTML:n, CSS:n ja JavaScriptin parissa.
-    Ensimmäisessä vaiheessa keskitytään sivuston rakenteeseen, ulkoasuun ja käyttöliittymään. Toisessa vaiheessa sivustolle lisätään toiminnallisuutta JavaScriptin avulla, mukaan lukien itse toteuttu peli.</p>
-    <p class="form-link"><a href="register.html">Luo tili</a></p>
-    <p class="form-link"><a href="login.html">Kirjaudu</a></p>
+
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+
+        <!-- floating deco targets -->
+        <div class="hero-deco deco-a"></div>
+        <div class="hero-deco deco-b"></div>
+        <div class="hero-deco deco-c"></div>
+
+        <p class="hero-tag">// web-kehitysprojekti</p>
+        <h1 class="hero-title">AIM TREENI</h1>
+        <p class="hero-sub">Harjoittele — Kehity — Hallitse</p>
+
+        <p class="hero-desc">
+            Vaiheittain etenevä pelisivusto, jota kehitetään osana ohjelmointiopintoja.
+            Harjoittelemme web-kehityksen perusteita — HTML, CSS ja JavaScript —
+            kulminoituen täysin itse toteutettuun aim-harjoituspeliin.
+        </p>
+
+        <div class="hero-actions">
+            <a href="login.html" class="btn-primary">Kirjaudu sisään</a>
+            <a href="register.html" class="btn-secondary">Luo tili</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-val" id="statTargets">∞</span>
+                <span class="stat-label">Maaleja</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-val">30</span>
+                <span class="stat-label">Sekuntia</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-val">x10</span>
+                <span class="stat-label">Max combo</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let n = 0;
+        const el = document.getElementById('statTargets');
+        const iv = setInterval(() => {
+            n += Math.ceil(Math.random() * 9);
+            if (n >= 999) { el.textContent = '∞'; clearInterval(iv); return; }
+            el.textContent = n;
+        }, 18);
+    </script>
 </body>
 </html>

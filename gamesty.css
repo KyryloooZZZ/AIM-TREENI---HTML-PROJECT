@@ -5,8 +5,10 @@
     align-items: center;
     justify-content: center;
     gap: 24px;
+    animation: fadeIn 0.4s ease;
 }
 
+/* ── HUD ── */
 .game-hud {
     display: flex;
     gap: 48px;
@@ -14,6 +16,7 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #555;
+    animation: slideDown 0.5s ease both;
 }
 
 .hud-val {
@@ -22,8 +25,10 @@
     display: block;
     text-align: center;
     margin-top: 4px;
+    transition: transform 0.1s;
 }
 
+/* ── ARENA ── */
 .arena {
     position: relative;
     width: 520px;
@@ -32,41 +37,108 @@
     background: #0d0d0d;
     overflow: hidden;
     cursor: crosshair;
+    animation: arenaReveal 0.5s ease 0.1s both;
+    box-shadow: 0 0 0 0 rgba(145,20,17,0);
+    transition: box-shadow 0.3s;
 }
 
+.arena.hit-flash {
+    box-shadow: inset 0 0 15px rgba(101, 7, 5, 0.25);
+}
+
+@keyframes arenaReveal {
+    from { opacity: 0; transform: scaleY(0.96); }
+    to   { opacity: 1; transform: scaleY(1); }
+}
+
+/* scanline effect */
+.arena::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.06) 2px,
+        rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* ── TARGET ── */
 .target {
     position: absolute;
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: #911411;
+    background: radial-gradient(circle at 35% 35%, #c41814, #911411);
     border: 2px solid #ff003c;
     cursor: crosshair;
-    transition: transform 0.05s;
+    animation: targetSpawn 0.15s cubic-bezier(0.22,1,0.36,1);
+    transform-origin: center;
 }
 
-.target.gold {
-    background: #7a5a00;
-    border-color: #e8af20;
+@keyframes targetSpawn {
+    0%   { transform: scale(1) rotate(-30deg); opacity: 0; }
+    50%  { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
 }
 
+/* ── HIT RIPPLE ── */
+.hit-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid #ff003c;
+    pointer-events: none;
+    animation: rippleOut 0.4s ease-out forwards;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    z-index: 5;
+}
+
+@keyframes rippleOut {
+    from { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    to   { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+/* ── FLOATING SCORE TEXT ── */
+.float-text {
+    position: absolute;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #e8af20;
+    pointer-events: none;
+    animation: floatUp 0.6s ease-out forwards;
+    z-index: 6;
+    transform: translateX(-50%);
+}
+
+@keyframes floatUp {
+    from { opacity: 1; transform: translateX(-50%) translateY(0); }
+    to   { opacity: 0; transform: translateX(-50%) translateY(-28px); }
+}
+
+/* ── MESSAGES ── */
 .game-msg {
     font-size: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #333;
     height: 18px;
+    transition: opacity 0.15s;
 }
 
-.game-msg.hit { color: #911411; 
-}
+.game-msg.hit { color: #911411; }
+.game-msg.miss { color: #2e2e2e; }
 
-.game-msg.miss { color: #333; 
-}
-
+/* ── CONTROLS ── */
 .game-controls {
     display: flex;
     gap: 12px;
+    animation: fadeIn 0.5s ease 0.2s both;
 }
 
 .game-controls button {
@@ -75,12 +147,26 @@
     padding: 8px;
 }
 
-#startBtn { background: #911411; 
+#startBtn {
+    background: #911411;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
-#resetBtn { background: #1a1a1a; border: 1px solid #2e2e2e; 
+#startBtn:hover {
+    box-shadow: 0 4px 20px rgba(145,20,17,0.5);
 }
 
+#resetBtn {
+    background: #111;
+    border: 1px solid #2e2e2e;
+}
+
+#resetBtn:hover {
+    background: #1a1a1a;
+    box-shadow: none;
+}
+
+/* ── OVERLAY ── */
 .overlay {
     position: absolute;
     inset: 0;
@@ -88,8 +174,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.88);
     gap: 12px;
+    backdrop-filter: blur(2px);
+    animation: overlayIn 0.3s ease;
+}
+
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 .overlay-title {
@@ -100,8 +193,14 @@
 }
 
 .overlay-score {
-    font-size: 48px;
+    font-size: 56px;
     color: #e8af20;
+    animation: scoreReveal 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+
+@keyframes scoreReveal {
+    from { opacity: 0; transform: scale(0.7); }
+    to   { opacity: 1; transform: scale(1); }
 }
 
 .overlay-sub {
@@ -110,6 +209,7 @@
     color: #333;
 }
 
+/* ── COMBO FLASH ── */
 .combo-flash {
     position: absolute;
     top: 8px;
@@ -118,8 +218,17 @@
     letter-spacing: 2px;
     color: #e8af20;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.15s;
+    z-index: 7;
 }
 
-.combo-flash.show { opacity: 1; 
+.combo-flash.show {
+    opacity: 1;
+    animation: comboJolt 0.3s ease;
+}
+
+@keyframes comboJolt {
+    0%   { transform: scale(0.8); }
+    60%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
